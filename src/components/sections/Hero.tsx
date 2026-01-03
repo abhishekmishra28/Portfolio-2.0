@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Download, ArrowDown, Eye } from 'lucide-react';
+import { Github, Linkedin, Mail, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const socialLinks = [
@@ -14,13 +14,19 @@ export const Hero = () => {
   };
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-hero">
+    <section
+      id="home"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-hero pt-16 md:pt-20 scroll-mt-20"
+    >
       {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(64,224,208,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(64,224,208,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
       
       {/* Gradient Orbs */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse-glow" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-[100px] animate-pulse-glow" style={{ animationDelay: '1s' }} />
+      <div
+        className="absolute bottom-1/4 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-[100px] animate-pulse-glow"
+        style={{ animationDelay: '1s' }}
+      />
 
       <div className="container-custom relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
@@ -80,6 +86,7 @@ export const Hero = () => {
                 Get in Touch
                 <Mail className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Button>
+
               <Button
                 asChild
                 size="lg"
@@ -130,10 +137,8 @@ export const Hero = () => {
             className="relative"
           >
             <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
-              {/* Glow Effect */}
               <div className="absolute inset-0 bg-primary/20 rounded-full blur-[60px]" />
-              
-              {/* Image Container */}
+
               <div className="relative w-full h-full rounded-full border-2 border-primary/30 p-1">
                 <div className="w-full h-full rounded-full bg-gradient-card overflow-hidden border border-border">
                   <img
@@ -144,14 +149,12 @@ export const Hero = () => {
                 </div>
               </div>
 
-              {/* Decorative Elements */}
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                 className="absolute inset-0 rounded-full border border-dashed border-primary/20"
               />
-              
-              {/* Code Snippet Badge */}
+
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -161,7 +164,6 @@ export const Hero = () => {
                 <code className="text-xs font-mono text-primary">{'<Developer />'}</code>
               </motion.div>
 
-              {/* Status Badge */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -169,13 +171,15 @@ export const Hero = () => {
                 className="absolute -left-4 bottom-8 bg-card border border-border rounded-lg px-4 py-2 shadow-card flex items-center gap-2"
               >
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-xs font-mono text-muted-foreground">Available for work</span>
+                <span className="text-xs font-mono text-muted-foreground">
+                  Available for work
+                </span>
               </motion.div>
             </div>
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator (kept empty intentionally for style) */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -186,8 +190,7 @@ export const Hero = () => {
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
             className="flex flex-col items-center gap-2 text-muted-foreground"
-          >
-          </motion.div>
+          ></motion.div>
         </motion.div>
       </div>
     </section>

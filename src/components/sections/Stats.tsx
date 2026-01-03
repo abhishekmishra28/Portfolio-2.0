@@ -21,7 +21,7 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 const LEETCODE_USER = "abhishekmishra2002";
 const GITHUB_USER = "abhishekmishra28";
 
-export const Stats = () => {
+export default function Stats() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
 
@@ -33,9 +33,6 @@ export const Stats = () => {
 
   useEffect(() => {
     const headers: any = {};
-    if (import.meta.env.VITE_GITHUB_TOKEN) {
-      headers.Authorization = `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`;
-    }
 
     (async () => {
       try {
@@ -109,32 +106,43 @@ export const Stats = () => {
   back.setFullYear(today.getFullYear() - 1);
 
   return (
-    <section id="stats" className="section-padding bg-background" ref={ref}>
-      <motion.div
-        className="text-center mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-      >
-        <h2 className="text-4xl font-bold">
-          LeetCode & <span className="text-gradient">GitHub</span>
-        </h2>
-        <p className="text-muted-foreground">
-          Real-time progress — problem solving & open-source work
-        </p>
-      </motion.div>
+    <div className="min-h-screen bg-slate-950 text-white py-16 px-4">
+      <section id="stats" className="max-w-7xl mx-auto" ref={ref}>
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-5xl font-bold mb-4">
+            LeetCode & <span className="bg-gradient-to-r from-green-400 to-blue-500 text-transparent bg-clip-text">GitHub</span>
+          </h2>
+          <p className="text-slate-400 text-lg">
+            Real-time progress — problem solving & open-source work
+          </p>
+        </motion.div>
 
-      {loading && (
-        <p className="text-center text-muted-foreground">
-          Loading live stats…
-        </p>
-      )}
+        {loading && (
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-400"></div>
+            <p className="text-slate-400 mt-4">Loading live stats…</p>
+          </div>
+        )}
 
-      {/* ================= LEETCODE ================= */}
-      {leet && (
-        <div className="space-y-10 mb-14">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div className="terminal-window p-6 border rounded-xl">
-              <pre className="font-mono text-sm">
+        {/* ================= LEETCODE ================= */}
+        {leet && (
+          <motion.div 
+            className="space-y-8 mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+              <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl">
+                <h3 className="text-sm font-semibold text-green-400 mb-4 flex items-center gap-2">
+                  <Code className="w-4 h-4" /> LEETCODE STATS
+                </h3>
+                <pre className="font-mono text-sm text-slate-300 overflow-x-auto">
 {`const leetcode = {
   username: "${LEETCODE_USER}",
   total: ${leet.total},
@@ -142,162 +150,194 @@ export const Stats = () => {
   medium: ${leet.medium},
   hard: ${leet.hard}
 }`}
-              </pre>
-            </div>
-
-            <div className="bg-card border rounded-xl p-6">
-              <Bar
-                data={{
-                  labels: ["Easy", "Medium", "Hard"],
-                  datasets: [
-                    {
-                      data: [leet.easy, leet.medium, leet.hard],
-                      backgroundColor: ["#22c55e", "#eab308", "#ef4444"],
-                      borderRadius: 6,
-                    },
-                  ],
-                }}
-                options={{ plugins: { legend: { display: false } } }}
-              />
-            </div>
-          </div>
-
-          <div className="terminal-window p-6 border rounded-xl">
-            <CalendarHeatmap
-              startDate={back}
-              endDate={today}
-              values={leet.heatmap}
-              classForValue={(v: any) =>
-                !v || v.count === 0
-                  ? "color-empty"
-                  : v.count < 2
-                  ? "color-scale-1"
-                  : v.count < 4
-                  ? "color-scale-2"
-                  : v.count < 6
-                  ? "color-scale-3"
-                  : "color-scale-4"
-              }
-            />
-
-            <a
-              href={`https://leetcode.com/u/${LEETCODE_USER}/`}
-              target="_blank"
-              className="underline text-green-400 text-sm mt-4 inline-block"
-            >
-              View full profile →
-            </a>
-          </div>
-        </div>
-      )}
-
-      {/* ================= GITHUB ================= */}
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* GitHub Overview + Contribution Calendar */}
-        <div className="bg-card border rounded-xl p-6">
-          <h3 className="font-mono font-bold mb-4 flex items-center gap-2">
-            <Github className="w-5" /> GitHub Overview
-          </h3>
-
-          {profile && (
-            <>
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="p-4 border rounded-lg text-center">
-                  <p className="text-2xl font-bold">{profile.public_repos}</p>
-                  <p className="text-xs text-muted-foreground">Repositories</p>
-                </div>
-
-                <div className="p-4 border rounded-lg text-center">
-                  <p className="text-2xl font-bold">{profile.followers}</p>
-                  <p className="text-xs text-muted-foreground">Followers</p>
-                </div>
-
-                <div className="p-4 border rounded-lg text-center">
-                  <p className="text-2xl font-bold">{profile.following}</p>
-                  <p className="text-xs text-muted-foreground">Following</p>
-                </div>
+                </pre>
               </div>
 
-              {/* ⭐ CONTRIBUTION CALENDAR (LIVE) */}
-              <div className="border rounded-lg p-4 bg-secondary/30">
-                <p className="text-xs text-muted-foreground mb-2">
-                  Contribution Calendar
-                </p>
-
-                <img
-                  src={`https://ghchart.rshah.org/00c853/${GITHUB_USER}`}
-                  className="w-full rounded"
-                  alt="GitHub contribution graph"
+              <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl">
+                <h3 className="text-sm font-semibold text-green-400 mb-6">PROBLEMS SOLVED</h3>
+                <Bar
+                  data={{
+                    labels: ["Easy", "Medium", "Hard"],
+                    datasets: [
+                      {
+                        data: [leet.easy, leet.medium, leet.hard],
+                        backgroundColor: ["#22c55e", "#eab308", "#ef4444"],
+                        borderRadius: 8,
+                        barThickness: 60,
+                      },
+                    ],
+                  }}
+                  options={{ 
+                    plugins: { legend: { display: false } },
+                    scales: {
+                      y: { 
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: '#1e293b' }
+                      },
+                      x: { 
+                        ticks: { color: '#94a3b8' },
+                        grid: { display: false }
+                      }
+                    }
+                  }}
                 />
               </div>
+            </div>
+
+            <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl overflow-x-auto">
+              <h3 className="text-sm font-semibold text-green-400 mb-6">SUBMISSION HEATMAP</h3>
+              <CalendarHeatmap
+                startDate={back}
+                endDate={today}
+                values={leet.heatmap}
+                classForValue={(v: any) =>
+                  !v || v.count === 0
+                    ? "color-empty"
+                    : v.count < 2
+                    ? "color-scale-1"
+                    : v.count < 4
+                    ? "color-scale-2"
+                    : v.count < 6
+                    ? "color-scale-3"
+                    : "color-scale-4"
+                }
+              />
 
               <a
-                href={`https://github.com/${GITHUB_USER}`}
+                href={`https://leetcode.com/u/${LEETCODE_USER}/`}
                 target="_blank"
-                className="underline text-sm block mt-4"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 text-sm mt-6 transition-colors"
               >
-                View GitHub Profile →
+                View full profile →
               </a>
-            </>
-          )}
-        </div>
+            </div>
+          </motion.div>
+        )}
 
-        {/* Recent Commits */}
-        <div className="bg-card border rounded-xl p-6">
-          <h3 className="font-mono font-bold mb-4 flex items-center gap-2">
-            <TrendingUp className="w-4" /> Recent Commits
+        {/* ================= GITHUB ================= */}
+        <motion.div 
+          className="grid lg:grid-cols-2 gap-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          {/* GitHub Overview + Contribution Calendar */}
+          <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl">
+            <h3 className="text-sm font-semibold text-blue-400 mb-6 flex items-center gap-2">
+              <Github className="w-5 h-5" /> GITHUB OVERVIEW
+            </h3>
+
+            {profile && (
+              <>
+                <div className="grid grid-cols-3 gap-4 mb-8">
+                  <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-center">
+                    <p className="text-3xl font-bold text-white">{profile.public_repos}</p>
+                    <p className="text-xs text-slate-400 mt-1">Repositories</p>
+                  </div>
+
+                  <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-center">
+                    <p className="text-3xl font-bold text-white">{profile.followers}</p>
+                    <p className="text-xs text-slate-400 mt-1">Followers</p>
+                  </div>
+
+                  <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-center">
+                    <p className="text-3xl font-bold text-white">{profile.following}</p>
+                    <p className="text-xs text-slate-400 mt-1">Following</p>
+                  </div>
+                </div>
+
+                {/* Contribution Calendar */}
+                <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-4 overflow-x-auto">
+                  <p className="text-xs text-slate-400 mb-3 font-semibold">CONTRIBUTION CALENDAR</p>
+                  <img
+                    src={`https://ghchart.rshah.org/00c853/${GITHUB_USER}`}
+                    className="w-full rounded"
+                    alt="GitHub contribution graph"
+                  />
+                </div>
+
+                <a
+                  href={`https://github.com/${GITHUB_USER}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm mt-6 transition-colors"
+                >
+                  View GitHub Profile →
+                </a>
+              </>
+            )}
+          </div>
+
+          {/* Recent Commits */}
+          <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl">
+            <h3 className="text-sm font-semibold text-purple-400 mb-6 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5" /> RECENT COMMITS
+            </h3>
+
+            <div className="space-y-3">
+              {commits.map((c, i) => (
+                <a
+                  key={i}
+                  href={c.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block p-4 bg-slate-800/30 border border-slate-700 rounded-xl hover:border-purple-500 hover:bg-slate-800/50 transition-all"
+                >
+                  <p className="font-medium text-white line-clamp-1">{c.message}</p>
+                  <p className="text-xs text-slate-400 mt-1">{c.repo}</p>
+                  <p className="text-[10px] text-slate-500 mt-1">{c.time}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Top Repositories */}
+        <motion.div 
+          className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <h3 className="text-sm font-semibold text-yellow-400 mb-6 flex items-center gap-2">
+            <Star className="w-5 h-5" /> TOP REPOSITORIES
           </h3>
 
-          <div className="space-y-3">
-            {commits.map((c, i) => (
+          <div className="grid sm:grid-cols-2 gap-4">
+            {repos.map((r) => (
               <a
-                key={i}
-                href={c.url}
+                key={r.id}
+                href={r.html_url}
                 target="_blank"
-                className="block p-3 border rounded-lg hover:border-primary"
+                rel="noopener noreferrer"
+                className="p-5 bg-slate-800/30 border border-slate-700 rounded-xl hover:border-yellow-500 hover:bg-slate-800/50 transition-all"
               >
-                <p className="font-medium">{c.message}</p>
-                <p className="text-xs text-muted-foreground">{c.repo}</p>
-                <p className="text-[10px] text-muted-foreground mt-1">
-                  {c.time}
+                <p className="font-semibold text-white text-lg">{r.name}</p>
+                <p className="text-sm text-slate-400 mt-2 line-clamp-2">
+                  {r.description || "No description"}
                 </p>
+                <div className="flex items-center gap-4 mt-3 text-xs text-slate-500">
+                  <span className="flex items-center gap-1">
+                    <Star className="w-3 h-3" /> {r.stargazers_count}
+                  </span>
+                  {r.language && <span>• {r.language}</span>}
+                </div>
               </a>
             ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Pinned repos */}
-      <div className="bg-card border rounded-xl p-6 mt-10">
-        <h3 className="font-mono font-bold mb-4">
-          <Star className="inline w-4 mr-1" /> Top Repositories
-        </h3>
-
-        <div className="grid sm:grid-cols-2 gap-4">
-          {repos.map((r) => (
-            <a
-              key={r.id}
-              href={r.html_url}
-              target="_blank"
-              className="p-4 border rounded-lg hover:border-primary transition"
-            >
-              <p className="font-semibold">{r.name}</p>
-              <p className="text-xs text-muted-foreground line-clamp-2">
-                {r.description || "No description"}
-              </p>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* Heatmap theme */}
-      <style>{`
-        .react-calendar-heatmap .color-empty { fill: #020617; }
-        .react-calendar-heatmap .color-scale-1 { fill: #14532d; }
-        .react-calendar-heatmap .color-scale-2 { fill: #16a34a; }
-        .react-calendar-heatmap .color-scale-3 { fill: #22c55e; }
-        .react-calendar-heatmap .color-scale-4 { fill: #bbf7d0; }
-      `}</style>
-    </section>
+        {/* Heatmap theme */}
+        <style>{`
+          .react-calendar-heatmap .color-empty { fill: #0f172a; }
+          .react-calendar-heatmap .color-scale-1 { fill: #14532d; }
+          .react-calendar-heatmap .color-scale-2 { fill: #16a34a; }
+          .react-calendar-heatmap .color-scale-3 { fill: #22c55e; }
+          .react-calendar-heatmap .color-scale-4 { fill: #86efac; }
+          .react-calendar-heatmap text { fill: #94a3b8; font-size: 10px; }
+        `}</style>
+      </section>
+    </div>
   );
-};
+}

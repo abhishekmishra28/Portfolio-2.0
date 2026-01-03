@@ -108,41 +108,50 @@ export const Navbar = () => {
 
       {/* Mobile Navigation */}
       <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-background/95 backdrop-blur-lg border-b border-border
-                      fixed top-16 left-0 right-0 z-[60]"
+  {isOpen && (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.3 }}
+      className="
+        md:hidden
+        fixed top-16 left-0 right-0 bottom-0
+        bg-background/95 backdrop-blur-lg border-b border-border
+        z-[1000]
+        pointer-events-auto
+      "
+    >
+      <div className="container-custom py-4 space-y-2">
+        {navItems.map((item, index) => (
+          <motion.button
+            key={item.name}
+            onClick={() => handleNavClick(item.href)}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.05 }}
+            className="block w-full text-left px-4 py-3 text-muted-foreground
+                       hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors"
           >
-            <div className="container-custom py-4 space-y-2">
-              {navItems.map((item, index) => (
-                <motion.button
-                  key={item.name}
-                  onClick={() => handleNavClick(item.href)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground
-                            hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors"
-                >
-                  {item.name}
-                </motion.button>
-              ))}
+            {item.name}
+          </motion.button>
+        ))}
 
-              <Button
-                variant="outline"
-                className="w-full mt-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-mono"
-                onClick={() => window.open("/Resume.pdf", "_blank", "noopener,noreferrer")}
-              >
-                Resume
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <Button
+          variant="outline"
+          className="w-full mt-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-mono"
+          onClick={() =>
+            window.open('/Resume.pdf', '_blank', 'noopener,noreferrer')
+          }
+        >
+          Resume
+        </Button>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
+
     </motion.nav>
   );
 };
