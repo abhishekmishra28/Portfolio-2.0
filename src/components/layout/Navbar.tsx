@@ -88,7 +88,7 @@ export const Navbar = () => {
               <Button
                 variant="outline"
                 className="ml-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-mono"
-                onClick={() => window.open("/Resume.pdf", "_blank", "noopener,noreferrer")}
+                onClick={() => window.open("/MyResume.pdf", "_blank", "noopener,noreferrer")}
               >
                 Resume
               </Button>
@@ -135,7 +135,7 @@ export const Navbar = () => {
                   className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground font-mono"
                   onClick={() => {
                     setIsOpen(false);
-                    window.open('/Resume.pdf', '_blank', 'noopener,noreferrer');
+                    window.open('/MyResume.pdf', '_blank', 'noopener,noreferrer');
                   }}
                 >
                   Resume

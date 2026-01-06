@@ -18,10 +18,7 @@ export const Hero = () => {
       id="home"
       className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-hero pt-16 md:pt-20 scroll-mt-20"
     >
-      {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(64,224,208,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(64,224,208,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
-      
-      {/* Gradient Orbs */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[100px] animate-pulse-glow" />
       <div
         className="absolute bottom-1/4 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-[100px] animate-pulse-glow"
@@ -29,7 +26,8 @@ export const Hero = () => {
       />
 
       <div className="container-custom relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+        <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-16">
+          
           {/* Text Content */}
           <div className="flex-1 text-center lg:text-left">
             <motion.div
@@ -68,10 +66,13 @@ export const Hero = () => {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
             >
-              I enjoy building things that are functional, fast, and visually appealing. From frontend interfaces to backend systems, I love working across the stack. My curiosity drives me toward AI and Machine Learning, where I explore data-driven solutions and automation. Problem solving is at the core of my work — finding elegant solutions to complex challenges is what motivates me.
+              I enjoy building things that are functional, fast, and visually appealing. From
+              frontend interfaces to backend systems, I love working across the stack. My curiosity
+              drives me toward AI and Machine Learning, where I explore data-driven solutions and
+              automation. Problem solving is at the core of my work — finding elegant solutions to
+              complex challenges is what motivates me.
             </motion.p>
 
-            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -94,7 +95,7 @@ export const Hero = () => {
                 className="border-primary text-primary hover:bg-primary hover:text-primary-foreground font-mono group"
               >
                 <a
-                  href="/Resume.pdf"
+                  href="/MyResume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center"
@@ -105,7 +106,6 @@ export const Hero = () => {
               </Button>
             </motion.div>
 
-            {/* Social Links */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -179,7 +179,6 @@ export const Hero = () => {
           </motion.div>
         </div>
 
-        {/* Scroll Indicator (kept empty intentionally for style) */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -190,7 +189,7 @@ export const Hero = () => {
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
             className="flex flex-col items-center gap-2 text-muted-foreground"
-          ></motion.div>
+          />
         </motion.div>
       </div>
     </section>
