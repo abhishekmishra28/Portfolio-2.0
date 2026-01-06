@@ -35,7 +35,26 @@ const projects = [
       "Beautiful UI with ShadCN + Tailwind",
     ],
   },
-
+  {
+    title: "AgniDB — B-Tree Database Engine",
+    description:
+      "Crash-safe B-Tree database engine built from scratch with persistence, LRU cache and dirty page tracking.",
+    longDescription:
+      "AgniDB is a fully-custom database engine written in modern C++ (C++20). It supports persistent storage, a 100-page LRU cache, dirty-page tracking, safe cascading deletes, and selective write optimization. Designed with reliability in mind, it survives crashes, validates structure integrity, and passes 40/40 automated tests.",
+    image: "/Project7.png",
+    tags: ["C++20", "Systems Programming", "Database", "B-Tree", "LRU Cache"],
+    liveUrl: "https://github.com/abhishekmishra28/AgniDB",   // repo acts as live reference
+    githubUrl: "https://github.com/abhishekmishra28/AgniDB",
+    featured: true,
+    features: [
+      "Production-grade B-Tree engine",
+      "Crash-safe persistent storage",
+      "LRU caching with dirty-page tracking",
+      "Full CRUD and range queries",
+      "Freelist validation and corruption protection",
+      "40/40 automated tests passing",
+    ],
+  },
   {
     title: "Crop Recommendation System",
     description:
