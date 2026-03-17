@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Github, Code, Star } from "lucide-react";
+import { Github, Code, Star, Flame, Calendar, Target } from "lucide-react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 
@@ -48,12 +48,19 @@ export default function Stats() {
           })
         );
 
+        // Calculate streak and total submissions
+        const totalSubmissions = heatmap.reduce((acc, curr) => acc + curr.count, 0);
+        const activeDays = heatmap.filter(h => h.count > 0).length;
+
         setLeet({
           total: d.totalSolved,
           easy: d.easySolved,
           medium: d.mediumSolved,
           hard: d.hardSolved,
           heatmap,
+          totalSubmissions,
+          activeDays,
+          ranking: d.ranking,
         });
 
         // ----- GitHub profile overview -----
@@ -123,7 +130,7 @@ export default function Stats() {
         {/* ================= LEETCODE ================= */}
         {leet && (
           <motion.div 
-            className="space-y-8 mb-16"
+            className="space-y-8 mb-20"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -175,36 +182,103 @@ export default function Stats() {
               </div>
             </div>
 
-            <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl overflow-x-auto">
-              <h3 className="text-sm font-semibold text-green-400 mb-6">SUBMISSION HEATMAP</h3>
-              <CalendarHeatmap
-                startDate={back}
-                endDate={today}
-                values={leet.heatmap}
-                classForValue={(v: any) =>
-                  !v || v.count === 0
-                    ? "color-empty"
-                    : v.count < 2
-                    ? "color-scale-1"
-                    : v.count < 4
-                    ? "color-scale-2"
-                    : v.count < 6
-                    ? "color-scale-3"
-                    : "color-scale-4"
-                }
-              />
+            {/* Enhanced Heatmap Section */}
+            <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+                <h3 className="text-sm font-semibold text-green-400 mb-4 lg:mb-0 flex items-center gap-2">
+                  <Calendar className="w-4 h-4" /> SUBMISSION HEATMAP
+                </h3>
+                
+                {/* Heatmap Stats */}
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-2">
+                    <Flame className="w-4 h-4 text-orange-400" />
+                    <span className="text-sm text-slate-300">
+                      <span className="font-bold text-white">{leet.totalSubmissions}</span> submissions
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-2">
+                    <Target className="w-4 h-4 text-green-400" />
+                    <span className="text-sm text-slate-300">
+                      <span className="font-bold text-white">{leet.activeDays}</span> active days
+                    </span>
+                  </div>
+                  {leet.ranking && (
+                    <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-2">
+                      <Star className="w-4 h-4 text-yellow-400" />
+                      <span className="text-sm text-slate-300">
+                        Rank <span className="font-bold text-white">#{leet.ranking.toLocaleString()}</span>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
 
-              <a
-                href={`https://leetcode.com/u/${LEETCODE_USER}/`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 text-sm mt-6 transition-colors"
-              >
-                View full profile →
-              </a>
+              {/* Heatmap Container */}
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-6 overflow-x-auto">
+                <CalendarHeatmap
+                  startDate={back}
+                  endDate={today}
+                  values={leet.heatmap}
+                  classForValue={(v: any) =>
+                    !v || v.count === 0
+                      ? "color-empty"
+                      : v.count < 2
+                      ? "color-scale-1"
+                      : v.count < 4
+                      ? "color-scale-2"
+                      : v.count < 6
+                      ? "color-scale-3"
+                      : "color-scale-4"
+                  }
+                  tooltipDataAttrs={(value: any) => {
+                    if (!value || !value.date) {
+                      return { 'data-tip': 'No submissions' } as any;
+                    }
+                    return {
+                      'data-tip': `${value.date}: ${value.count} submission${value.count !== 1 ? 's' : ''}`,
+                    } as any;
+                  }}
+                  showWeekdayLabels={true}
+                />
+              </div>
+
+              {/* Legend */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-6 gap-4">
+                <a
+                  href={`https://leetcode.com/u/${LEETCODE_USER}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 text-sm transition-colors"
+                >
+                  View full profile →
+                </a>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-500">Less</span>
+                  <div className="flex gap-1">
+                    <div className="w-3 h-3 rounded-sm bg-slate-800 border border-slate-700"></div>
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#14532d' }}></div>
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#16a34a' }}></div>
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#22c55e' }}></div>
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#86efac' }}></div>
+                  </div>
+                  <span className="text-xs text-slate-500">More</span>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
+
+        {/* Divider */}
+        <div className="relative my-16">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-800"></div>
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-slate-950 px-4 text-sm text-slate-500">Open Source</span>
+          </div>
+        </div>
 
         {/* ================= GITHUB OVERVIEW (Expanded) ================= */}
         <motion.div 
@@ -300,7 +374,7 @@ export default function Stats() {
           </motion.div>
         )}
 
-        {/* Heatmap theme */}
+        {/* Enhanced Heatmap theme */}
         <style>{`
           .react-calendar-heatmap .color-empty { fill: #0f172a; }
           .react-calendar-heatmap .color-scale-1 { fill: #14532d; }
@@ -308,6 +382,8 @@ export default function Stats() {
           .react-calendar-heatmap .color-scale-3 { fill: #22c55e; }
           .react-calendar-heatmap .color-scale-4 { fill: #86efac; }
           .react-calendar-heatmap text { fill: #94a3b8; font-size: 10px; }
+          .react-calendar-heatmap rect:hover { stroke: #22c55e; stroke-width: 1px; }
+          .react-calendar-heatmap .react-calendar-heatmap-weekday-labels { transform: translateY(2px); }
         `}</style>
       </section>
     </div>
