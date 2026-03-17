@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Github, Code, TrendingUp, Star } from "lucide-react";
+import { Github, Code, Star } from "lucide-react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 
@@ -27,8 +27,7 @@ export default function Stats() {
 
   const [leet, setLeet] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
-  const [commits, setCommits] = useState<any[]>([]);
-  const [repos, setRepos] = useState<any[]>([]);
+  const [repos, setRepos] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,37 +63,29 @@ export default function Stats() {
         ).then((r) => r.json());
         setProfile(user);
 
-        // ----- Recent commits -----
-        const events = await fetch(
-          `https://api.github.com/users/${GITHUB_USER}/events/public`,
-          { headers }
-        ).then((r) => r.json());
-
-        setCommits(
-          events
-            .filter((e: any) => e.type === "PushEvent")
-            .slice(0, 5)
-            .map((e: any) => ({
-              repo: e.repo.name,
-              message: e.payload?.commits?.[0]?.message ?? "Commit",
-              url: `https://github.com/${e.repo.name}/commit/${e.payload?.commits?.[0]?.sha}`,
-              time: new Date(e.created_at).toLocaleString(),
-            }))
-        );
-
         // ----- Top repos -----
-        const repoData = await fetch(
-          `https://api.github.com/users/${GITHUB_USER}/repos`,
-          { headers }
-        ).then((r) => r.json());
+        try {
+          const repoData = await fetch(
+            `https://api.github.com/users/${GITHUB_USER}/repos`,
+            { headers }
+          ).then((r) => r.json());
 
-        setRepos(
-          repoData
-            .sort(
-              (a: any, b: any) => b.stargazers_count - a.stargazers_count
-            )
-            .slice(0, 4)
-        );
+          // Check if repoData is a valid array
+          if (Array.isArray(repoData) && repoData.length > 0) {
+            setRepos(
+              repoData
+                .sort(
+                  (a: any, b: any) => b.stargazers_count - a.stargazers_count
+                )
+                .slice(0, 4)
+            );
+          } else {
+            setRepos(null);
+          }
+        } catch (repoError) {
+          console.error("Failed to fetch repositories:", repoError);
+          setRepos(null);
+        }
       } finally {
         setLoading(false);
       }
@@ -215,118 +206,99 @@ export default function Stats() {
           </motion.div>
         )}
 
-        {/* ================= GITHUB ================= */}
+        {/* ================= GITHUB OVERVIEW (Expanded) ================= */}
         <motion.div 
-          className="grid lg:grid-cols-2 gap-8"
+          className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl"
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          {/* GitHub Overview + Contribution Calendar */}
-          <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl">
-            <h3 className="text-sm font-semibold text-blue-400 mb-6 flex items-center gap-2">
-              <Github className="w-5 h-5" /> GITHUB OVERVIEW
-            </h3>
+          <h3 className="text-sm font-semibold text-blue-400 mb-6 flex items-center gap-2">
+            <Github className="w-5 h-5" /> GITHUB OVERVIEW
+          </h3>
 
-            {profile && (
-              <>
-                <div className="grid grid-cols-3 gap-4 mb-8">
-                  <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-center">
-                    <p className="text-3xl font-bold text-white">{profile.public_repos}</p>
-                    <p className="text-xs text-slate-400 mt-1">Repositories</p>
-                  </div>
-
-                  <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-center">
-                    <p className="text-3xl font-bold text-white">{profile.followers}</p>
-                    <p className="text-xs text-slate-400 mt-1">Followers</p>
-                  </div>
-
-                  <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-center">
-                    <p className="text-3xl font-bold text-white">{profile.following}</p>
-                    <p className="text-xs text-slate-400 mt-1">Following</p>
-                  </div>
+          {profile && (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
+                  <p className="text-4xl font-bold text-white">{profile.public_repos}</p>
+                  <p className="text-sm text-slate-400 mt-2">Repositories</p>
                 </div>
 
-                {/* Contribution Calendar */}
-                <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-4 overflow-x-auto">
-                  <p className="text-xs text-slate-400 mb-3 font-semibold">CONTRIBUTION CALENDAR</p>
-                  <img
-                    src={`https://ghchart.rshah.org/00c853/${GITHUB_USER}`}
-                    className="w-full rounded"
-                    alt="GitHub contribution graph"
-                  />
+                <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
+                  <p className="text-4xl font-bold text-white">{profile.followers}</p>
+                  <p className="text-sm text-slate-400 mt-2">Followers</p>
                 </div>
 
-                <a
-                  href={`https://github.com/${GITHUB_USER}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm mt-6 transition-colors"
-                >
-                  View GitHub Profile →
-                </a>
-              </>
-            )}
-          </div>
+                <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
+                  <p className="text-4xl font-bold text-white">{profile.following}</p>
+                  <p className="text-sm text-slate-400 mt-2">Following</p>
+                </div>
 
-          {/* Recent Commits */}
-          <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl">
-            <h3 className="text-sm font-semibold text-purple-400 mb-6 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5" /> RECENT COMMITS
+                <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
+                  <p className="text-4xl font-bold text-white">{profile.public_gists || 0}</p>
+                  <p className="text-sm text-slate-400 mt-2">Gists</p>
+                </div>
+              </div>
+
+              {/* Contribution Calendar */}
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-6 overflow-x-auto">
+                <p className="text-sm text-slate-400 mb-4 font-semibold">CONTRIBUTION CALENDAR</p>
+                <img
+                  src={`https://ghchart.rshah.org/00c853/${GITHUB_USER}`}
+                  className="w-full rounded"
+                  alt="GitHub contribution graph"
+                />
+              </div>
+
+              <a
+                href={`https://github.com/${GITHUB_USER}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm mt-6 transition-colors"
+              >
+                View GitHub Profile →
+              </a>
+            </>
+          )}
+        </motion.div>
+
+        {/* Top Repositories - Only show if repos loaded successfully */}
+        {repos && repos.length > 0 && (
+          <motion.div 
+            className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <h3 className="text-sm font-semibold text-yellow-400 mb-6 flex items-center gap-2">
+              <Star className="w-5 h-5" /> TOP REPOSITORIES
             </h3>
 
-            <div className="space-y-3">
-              {commits.map((c, i) => (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {repos.map((r) => (
                 <a
-                  key={i}
-                  href={c.url}
+                  key={r.id}
+                  href={r.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block p-4 bg-slate-800/30 border border-slate-700 rounded-xl hover:border-purple-500 hover:bg-slate-800/50 transition-all"
+                  className="p-5 bg-slate-800/30 border border-slate-700 rounded-xl hover:border-yellow-500 hover:bg-slate-800/50 transition-all"
                 >
-                  <p className="font-medium text-white line-clamp-1">{c.message}</p>
-                  <p className="text-xs text-slate-400 mt-1">{c.repo}</p>
-                  <p className="text-[10px] text-slate-500 mt-1">{c.time}</p>
+                  <p className="font-semibold text-white text-lg">{r.name}</p>
+                  <p className="text-sm text-slate-400 mt-2 line-clamp-2">
+                    {r.description || "No description"}
+                  </p>
+                  <div className="flex items-center gap-4 mt-3 text-xs text-slate-500">
+                    <span className="flex items-center gap-1">
+                      <Star className="w-3 h-3" /> {r.stargazers_count}
+                    </span>
+                    {r.language && <span>• {r.language}</span>}
+                  </div>
                 </a>
               ))}
             </div>
-          </div>
-        </motion.div>
-
-        {/* Top Repositories */}
-        <motion.div 
-          className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-2xl p-8 shadow-xl mt-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <h3 className="text-sm font-semibold text-yellow-400 mb-6 flex items-center gap-2">
-            <Star className="w-5 h-5" /> TOP REPOSITORIES
-          </h3>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            {repos.map((r) => (
-              <a
-                key={r.id}
-                href={r.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-5 bg-slate-800/30 border border-slate-700 rounded-xl hover:border-yellow-500 hover:bg-slate-800/50 transition-all"
-              >
-                <p className="font-semibold text-white text-lg">{r.name}</p>
-                <p className="text-sm text-slate-400 mt-2 line-clamp-2">
-                  {r.description || "No description"}
-                </p>
-                <div className="flex items-center gap-4 mt-3 text-xs text-slate-500">
-                  <span className="flex items-center gap-1">
-                    <Star className="w-3 h-3" /> {r.stargazers_count}
-                  </span>
-                  {r.language && <span>• {r.language}</span>}
-                </div>
-              </a>
-            ))}
-          </div>
-        </motion.div>
+          </motion.div>
+        )}
 
         {/* Heatmap theme */}
         <style>{`
