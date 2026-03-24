@@ -4,10 +4,10 @@ import { useRef, useEffect, useState } from 'react';
 import { Code2, Coffee, Briefcase, Users } from 'lucide-react';
 
 const stats = [
-  { icon: Code2, value: 25, suffix: '+', label: 'Projects Built' },
-  { icon: Coffee, value: 800, suffix: '+', label: 'Cups of Coffee' },
-  { icon: Briefcase, value: 1, suffix: '+', label: 'Years Experience' },
-  { icon: Users, value: 98, suffix: '%', label: 'Client Satisfaction' },
+  { icon: Code2, value: 10, suffix: '+', label: 'Systems Designed' },
+  { icon: Coffee, value: 600, suffix: '+', label: 'DSA Problems' },
+  { icon: Briefcase, value: 6, suffix: '+', label: 'Tech Stacks Explored' },
+  { icon: Users, value: 3, suffix: '+', label: 'End-to-End Deployed Apps' },
 ];
 
 const CountUp = ({ target, suffix }: { target: number; suffix: string }) => {
