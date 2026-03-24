@@ -69,7 +69,7 @@ const certifications = [
 const achievements = [
   {
     icon: "🔥",
-    title: "300+ LeetCode Problems",
+    title: "400+ LeetCode Problems",
     description: "Solved across arrays, graphs, DP, recursion & more"
   },
   {
