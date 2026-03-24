@@ -36,23 +36,26 @@ const projects = [
     ],
   },
   {
-    title: "AgniDB — B-Tree Database Engine",
+    title: "C++ Banking System with SQLite Integration",
     description:
-      "Crash-safe B-Tree database engine built from scratch with persistence, LRU cache and dirty page tracking.",
+      "Modular banking backend in C++ with SQLite, featuring clean architecture, OOP design, and real-world financial system components.",
     longDescription:
-      "AgniDB is a fully-custom database engine written in modern C++ (C++20). It supports persistent storage, a 100-page LRU cache, dirty-page tracking, safe cascading deletes, and selective write optimization. Designed with reliability in mind, it survives crashes, validates structure integrity, and passes 40/40 automated tests.",
+      "This project is a fully modular banking system developed in modern C++ using Object-Oriented Programming principles and SQLite for persistent storage. It simulates a real-world banking backend with features such as account management (savings and current), deposits, withdrawals, transfers, fraud detection, loan processing, notifications, and audit logging. The system follows a layered architecture with clear separation of concerns across models, services, security, and infrastructure layers, reflecting industry-level design patterns and best practices.",
     image: "/Project7.png",
-    tags: ["C++20", "Systems Programming", "Database", "B-Tree", "LRU Cache"],
-    liveUrl: "https://github.com/abhishekmishra28/AgniDB",   // repo acts as live reference
+    tags: ["C++", "OOP", "SQLite", "System Design", "Backend Development"],
+    liveUrl: "https://github.com/abhishekmishra28/AgniDB", 
     githubUrl: "https://github.com/abhishekmishra28/AgniDB",
     featured: true,
     features: [
-      "Production-grade B-Tree engine",
-      "Crash-safe persistent storage",
-      "LRU caching with dirty-page tracking",
-      "Full CRUD and range queries",
-      "Freelist validation and corruption protection",
-      "40/40 automated tests passing",
+      "Account management (Savings & Current accounts)",
+      "Deposit, withdrawal, and fund transfer operations",
+      "Fraud detection system",
+      "Loan processing module",
+      "Notification system",
+      "Audit logging",
+      "SQLite-based persistent storage",
+      "Layered architecture with separation of concerns",
+      "Implements Encapsulation, Inheritance, Polymorphism, and Abstraction",
     ],
   },
   {
