@@ -135,7 +135,7 @@ export const Navbar = () => {
                   className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground font-mono"
                   onClick={() => {
                     setIsOpen(false);
-                    window.open('/MyResume.pdf', '_blank', 'noopener,noreferrer');
+                    window.open('/CV.pdf', '_blank', 'noopener,noreferrer');
                   }}
                 >
                   Resume
