@@ -16,6 +16,26 @@ import {
 
 const projects = [
   {
+    title: "BloodBridge",
+    description: "Full-stack MERN Blood Donation Management System.",
+    longDescription:
+      "A scalable platform connecting donors, recipients, and hospitals with real-time booking, blood requests, and role-based dashboards. Includes secure authentication, admin analytics, and donation eligibility logic.",
+    image: "/bloodbridge.png",
+    tags: ["MongoDB", "Express.js", "React", "Node.js", "JWT", "Recharts"],
+    liveUrl: "https://blood-bridge-rho.vercel.app/",
+    githubUrl: "https://github.com/abhishekmishra28/bloodbridge",
+    featured: true,
+    features: [
+      "Role-based dashboards (Admin & User)",
+      "Blood donation slot booking system",
+      "Blood request with urgency filtering",
+      "3-month donation restriction logic",
+      "JWT authentication & protected routes",
+      "Admin analytics dashboard with charts",
+      "Real-time notifications (polling)",
+    ],
+  },
+  {
     title: "GiffyDuck Notes",
     description:
       "AI-powered note-taking & creative writing platform with real-time sync and search.",
@@ -117,26 +137,7 @@ const projects = [
       "Responsive design",
       "PM2 VPS deployment",
     ],
-  },
-
-  {
-    title: "My Portfolio",
-    description: "Motion-rich portfolio with terminal-themed UI sections.",
-    longDescription:
-      "My personal portfolio built with modern animation techniques, coding-styled components, and dark/light theme support.",
-    image: "/Project3.png",
-    tags: ["Next.js 14", "TypeScript", "Tailwind", "Framer Motion", "Rive", "ShadCN"],
-    liveUrl: "/",
-    githubUrl: "https://github.com/abhishekmishra28/MyPortfolio",
-    featured: false,
-    features: [
-      "Framer Motion animations",
-      "Rive interactive elements",
-      "Terminal-style About section",
-      "Dark mode support",
-      "Interactive project showcase",
-    ],
-  },
+  }
 ];
 
 const allTags = ["All", ...new Set(projects.flatMap((p) => p.tags))];

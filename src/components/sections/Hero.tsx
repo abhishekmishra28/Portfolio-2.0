@@ -95,7 +95,7 @@ export const Hero = () => {
                 className="border-primary text-primary hover:bg-primary hover:text-primary-foreground font-mono group"
               >
                 <a
-                  href="/MyResume.pdf"
+                  href="/CV.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center"
