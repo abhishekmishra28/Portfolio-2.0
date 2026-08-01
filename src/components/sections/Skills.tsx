@@ -1,38 +1,104 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Code, Layout, Database, Cloud, Users, Wrench, Brain } from 'lucide-react';
+import { Code, Layout, Database, Cloud, Users, Wrench, Brain, Cpu, Server } from 'lucide-react';
 
 const skillCategories = [
   {
-    title: 'Programming Languages',
+    title: "Programming Languages",
     icon: Code,
-    skills: ['JavaScript', 'TypeScript', 'Python', 'C++', 'SQL'],
+    skills: [
+      "JavaScript",
+      "TypeScript",
+      "C++",
+      "Python",
+      "SQL"
+    ],
   },
   {
-    title: 'Frameworks & Libraries',
+    title: "Frontend",
     icon: Layout,
-    skills: ['React', 'Next.js', 'Node.js', 'Express', 'Tailwind CSS', 'Framer Motion'],
+    skills: [
+      "React",
+      "Next.js",
+      "Tailwind CSS",
+      "ShadCN UI",
+      "Framer Motion",
+      "HTML5",
+      "CSS3"
+    ],
   },
   {
-    title: 'Machine Learning & AI',
-    icon: Brain,
-    skills: ['Scikit-learn', 'Pandas', 'NumPy', 'Jupyter Notebook', 'Data Visualization'],
+    title: "Backend",
+    icon: Server,
+    skills: [
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "JWT Authentication",
+      "Prisma ORM",
+      "Mongoose",
+      "Zod Validation"
+    ],
   },
   {
-    title: 'Databases',
+    title: "Databases & Cache",
     icon: Database,
-    skills: ['PostgreSQL', 'MongoDB', 'MySQL', 'Firebase'],
+    skills: [
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "MySQL",
+      "Supabase"
+    ],
   },
   {
-    title: 'Tools & Platforms',
+    title: "Cloud & DevOps",
+    icon: Cloud,
+    skills: [
+      "Docker",
+      "GitHub Actions",
+      "Vercel",
+      "Render",
+      "Neon",
+      "PM2"
+    ],
+  },
+  {
+    title: "AI & Machine Learning",
+    icon: Brain,
+    skills: [
+      "OpenRouter",
+      "Gemini API",
+      "Scikit-learn",
+      "Pandas",
+      "NumPy"
+    ],
+  },
+  {
+    title: "Tools",
     icon: Wrench,
-    skills: ['Git', 'GitHub', 'VS Code', 'Jupyter Notebook', 'Google Colab'],
+    skills: [
+      "Git",
+      "GitHub",
+      "VS Code",
+      "Postman",
+      "Swagger",
+      "Jest",
+      "k6"
+    ],
   },
   {
-    title: 'Soft Skills',
-    icon: Users,
-    skills: ['Problem Solving', 'Communication', 'Team Work', 'Leadership', 'Adaptability'],
+    title: "Computer Science",
+    icon: Cpu,
+    skills: [
+      "Data Structures & Algorithms",
+      "Object-Oriented Programming",
+      "Low-Level Design",
+      "System Design",
+      "Operating Systems",
+      "DBMS"
+    ],
   },
 ];
 

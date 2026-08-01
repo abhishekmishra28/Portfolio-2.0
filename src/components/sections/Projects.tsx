@@ -16,6 +16,98 @@ import {
 
 const projects = [
   {
+    "title": "RateShield",
+    "description": "Production-grade distributed API rate limiting service with Redis, PostgreSQL, and multiple rate limiting algorithms.",
+    "longDescription": "RateShield is a scalable backend service that protects APIs from abuse using Token Bucket and Sliding Window algorithms. It leverages Redis Lua scripts for atomic operations, PostgreSQL for client management, Docker for deployment, and follows clean architecture with comprehensive testing and CI/CD.",
+    "image": "/rateshield.svg",
+    "tags": [
+      "Node.js",
+      "Express.js",
+      "Redis",
+      "PostgreSQL",
+      "Prisma",
+      "Docker",
+      "JWT",
+      "Zod",
+      "Swagger",
+      "Jest",
+      "CI/CD"
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/abhishekmishra28/RateShield",
+    "featured": true,
+    "features": [
+      "Token Bucket & Sliding Window algorithms",
+      "Atomic Redis Lua scripts for concurrency safety",
+      "API Key Authentication",
+      "Admin dashboard for client management",
+      "Real-time analytics",
+      "Swagger API documentation",
+      "Docker & Docker Compose support",
+      "GitHub Actions CI/CD",
+      "Jest unit & integration tests",
+      "Horizontal scaling architecture"
+    ]
+  },
+  {
+    "title": "SplitMate",
+    "description": "Financial-grade shared expense platform with advanced split algorithms and intelligent CSV import.",
+    "longDescription": "SplitMate is a full-stack expense management platform built for roommates and groups. It supports equal, unequal, percentage, and share-based expense splitting, temporal memberships, intelligent CSV import with anomaly detection, Razorpay settlements, and transparent audit trails.",
+    "image": "/splitmate.png",
+    "tags": [
+      "React",
+      "Node.js",
+      "Express.js",
+      "PostgreSQL",
+      "Prisma",
+      "JWT",
+      "Razorpay",
+      "Tailwind CSS"
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/abhishekmishra28/SplitMate",
+    "featured": true,
+    "features": [
+      "JWT Authentication",
+      "Equal, Unequal, Percentage & Share-based splits",
+      "Temporal group memberships",
+      "Smart CSV importer with anomaly detection",
+      "Razorpay payment integration",
+      "Peer-to-peer settlements",
+      "Transparent balance audit",
+      "Expense history & analytics"
+    ]
+  },
+  {
+    "title": "Mini CRM",
+    "description": "AI-native CRM platform with customer segmentation, campaign management, analytics, and AI assistant.",
+    "longDescription": "Mini CRM is a full-stack customer relationship management platform for fashion brands featuring AI-powered audience segmentation, campaign management across multiple communication channels, customer analytics, and an OpenRouter-powered CRM assistant.",
+    "image": "/minicrm.png",
+    "tags": [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "OpenRouter",
+      "AI",
+      "Tailwind CSS"
+    ],
+    "liveUrl": "",
+    "githubUrl": "https://github.com/abhishekmishra28/Mini-CRM",
+    "featured": true,
+    "features": [
+      "AI-powered customer segmentation",
+      "Dashboard with revenue & customer analytics",
+      "Campaign management (WhatsApp, SMS, Email, RCS)",
+      "Real-time campaign simulation",
+      "OpenRouter AI assistant",
+      "Customer order history",
+      "Audience builder",
+      "Performance analytics dashboard"
+    ]
+  },
+  {
     title: "BloodBridge",
     description: "Full-stack MERN Blood Donation Management System.",
     longDescription:

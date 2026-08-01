@@ -69,17 +69,17 @@ const certifications = [
 const achievements = [
   {
     icon: "🔥",
-    title: "400+ LeetCode Problems",
+    title: "500+ LeetCode Problems",
     description: "Solved across arrays, graphs, DP, recursion & more"
   },
   {
     icon: "💡",
-    title: "500+ Coding Problems",
+    title: "1000+ Coding Problems",
     description: "Across GFG, LeetCode, HackerRank and other platforms"
   },
   {
     icon: "🏆",
-    title: "5+ Deployed Websites",
+    title: "8+ Deployed Websites",
     description: "Production-ready apps live on the internet"
   },
   {
